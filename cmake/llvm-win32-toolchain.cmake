@@ -5,7 +5,7 @@ endif()
 set(CMAKE_C_COMPILER "clang.exe")
 set(CMAKE_CXX_COMPILER "clang++.exe")
 
-list(APPEND CMAKE_INCLUDE_PATH
+list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt"
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um"
     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared"
