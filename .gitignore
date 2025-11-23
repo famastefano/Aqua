@@ -1,0 +1,6 @@
+cmake-*/
+build/
+install/
+.vs/
+.vscode/
+compile_commands.json
