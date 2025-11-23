@@ -1,0 +1,149 @@
+﻿{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "warnings": {
+        "dev": true,
+        "deprecated": true,
+        "uninitialized": true
+      },
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/install/${presetName}",
+      "generator": "Ninja",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "toolchainFile": "${sourceDir}/cmake/llvm-win32-toolchain.cmake",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      }
+    },
+    {
+      "name": "llvm-debug",
+      "inherits": [
+        "base"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-std=c++23 -g3 -fno-omit-frame-pointer -O0 -pedantic-errors -fno-exceptions -Wall -Wextra -Wconversion -Wdouble-promotion -Wshadow -Wundef"
+      }
+    },
+    {
+      "name": "llvm-asan",
+      "inherits": [
+        "llvm-debug"
+      ],
+      "cacheVariables": {
+        "AQUA_SANITIZERS_CXX_FLAGS": "-fsanitize=address,undefined"
+      }
+    },
+    {
+      "name": "llvm-asan-thread",
+      "inherits": [
+        "llvm-debug"
+      ],
+      "cacheVariables": {
+        "AQUA_SANITIZERS_CXX_FLAGS": "-fsanitize=thread"
+      }
+    },
+    {
+      "name": "llvm-test-asan",
+      "inherits": [
+        "llvm-asan"
+      ],
+      "cacheVariables": {
+        "AQUA_ENABLE_TESTS": true
+      }
+    },
+    {
+      "name": "llvm-test-asan-thread",
+      "inherits": [
+        "llvm-asan-thread"
+      ],
+      "cacheVariables": {
+        "AQUA_ENABLE_TESTS": true
+      }
+    },
+    {
+      "name": "llvm-release",
+      "inherits": [
+        "base"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "-std=c++23 -fno-omit-frame-pointer -O2 -pedantic-errors -fno-exceptions -Wall -Wextra -Wconversion -Wdouble-promotion -Wshadow -Wundef -Wpadded -flto=thin"
+      }
+    },
+    {
+      "name": "msvc-debug",
+      "inherits": [
+        "base"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "/Od /Zi /std:c++latest /W4 /permissive- /EHa- /EHs- /GR- /volatile:iso /diagnostic:caret /Zc:__cplusplus /Zc:enumTypes /Zc:preprocessor /Zc:throwingNew-"
+      }
+    },
+    {
+      "name": "msvc-release",
+      "inherits": [
+        "base"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "/O2 /std:c++latest /W4 /permissive- /EHa- /EHs- /GR- /volatile:iso /diagnostic:caret /Zc:__cplusplus /Zc:enumTypes /Zc:preprocessor /Zc:throwingNew-"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "llvm-debug",
+      "configurePreset": "llvm-debug"
+    },
+    {
+      "name": "llvm-asan",
+      "configurePreset": "llvm-asan"
+    },
+    {
+      "name": "llvm-asan-thread",
+      "configurePreset": "llvm-asan-thread"
+    },
+    {
+      "name": "llvm-release",
+      "configurePreset": "llvm-release"
+    },
+    {
+      "name": "llvm-test-asan",
+      "configurePreset": "llvm-test-asan"
+    },
+    {
+      "name": "llvm-test-asan-thread",
+      "configurePreset": "llvm-test-asan-thread"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "llvm-test-asan",
+      "configurePreset": "llvm-test-asan",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "scheduleRandom": true
+      }
+    },
+    {
+      "name": "llvm-test-asan-thread",
+      "configurePreset": "llvm-asan-thread",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "scheduleRandom": true
+      }
+    }
+  ]
+}
