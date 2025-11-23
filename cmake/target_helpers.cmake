@@ -131,6 +131,12 @@ function(aqua_add_subtarget target_name parent_target_name)
         return()
     endif()
 
+    get_target_property(_real_parent_name ${parent_target_name} ALIASED_TARGET)
+    if(_real_parent_name)
+        set(parent_target_name ${_real_parent_name})
+    endif()
+    unset(_real_parent_name)
+
     get_target_property(parent_dir ${parent_target_name} SOURCE_DIR)
     aqua_add_target(${target_name} DIRECTORY "${parent_dir}/${target_name}" ${ARGN})
 
