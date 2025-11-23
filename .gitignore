@@ -4,3 +4,7 @@ install/
 .vs/
 .vscode/
 compile_commands.json
+docs/**
+!docs/**/*.tex
+!docs/**/*.pdf
+!docs/**/

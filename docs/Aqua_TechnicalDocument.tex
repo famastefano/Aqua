@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper]{report}
+
+% Core
+\usepackage[a4paper]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{marginnote}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xparse}
+
+% Math
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{siunitx}
+
+% Generated Graphics
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning, shapes, calc, decorations.pathmorphing}
+
+% Prototyping
+\setlength{\marginparwidth}{2cm}
+\usepackage[colorinlistoftodos]{todonotes}
+
+% Glossary
+\usepackage[nonumberlist,sort=standard]{glossaries}
+\makeglossaries
+\NewDocumentCommand{\glse}{mm}{%
+    \ifglsentryexists{#1}{%
+        \gls{#1}% use it if already defined
+    }{%
+        \newglossaryentry{#1}{name={#1}, description={#2}}%
+        \gls{#1}%
+    }%
+}
+
+\begin{document}
+	
+\title{Aqua\\Technical Document\\\normalsize{v0.1}}
+\author{Stefano Fam\`a}
+\date{\today}
+\maketitle
+\tableofcontents
+
+\newpage
+
+\chapter{Revision History}
+
+\begin{tabularx}{\textwidth}{r l X}
+	\textbf{Rev.} & \textbf{Date} & \textbf{Changes}\\
+    0.1 & 2025-11-22 & Document created.\\
+	\bottomrule
+\end{tabularx}
+
+\chapter{Project Overview}
+\section{Concept}
+Aqua is an 3D Engine targeting realistic simulations in military environments.
+It follows the DRY and SOLID principles, component-based design,
+and it's my take on how a large and complexe software shall be written.
+
+STL data structures have been rewritten to support my take on how
+an allocator shall be used by them, rather being part of a type.
+
+\section{Architecture}
+
+\begin{center}
+\begin{tikzpicture}
+    
+\end{tikzpicture}
+\end{center}
+    
+\end{document}
