@@ -27,14 +27,14 @@ endfunction()
 function(aqua_add_target target_name)
     message(STATUS "Configuring target ${target_name}")
 
-    set(options EXECUTABLE SHARED_LIBRARY STATIC_LIBRARY HEADER_ONLY_LIBRARY)
+    set(options CONSOLE_EXECUTABLE GUI_EXECUTABLE SHARED_LIBRARY STATIC_LIBRARY HEADER_ONLY_LIBRARY)
     set(oneValueArgs DIRECTORY)
     set(multiValueArgs CONFIGURATIONS)
     cmake_parse_arguments(PARSE_ARGV 1 arg
             "${options}" "${oneValueArgs}" "${multiValueArgs}"
     )
 
-    _acqua_get_defined_var_count(arg_EXECUTABLE arg_SHARED_LIBRARY arg_STATIC_LIBRARY arg_HEADER_ONLY_LIBRARY)
+    _acqua_get_defined_var_count(arg_CONSOLE_EXECUTABLE arg_GUI_EXECUTABLE arg_SHARED_LIBRARY arg_STATIC_LIBRARY arg_HEADER_ONLY_LIBRARY)
     message(STATUS "Count: ${defined_count}")
     if(${defined_count} EQUAL 0)
         message(FATAL_ERROR "Missing target type, use only one of ${options}")
@@ -53,14 +53,20 @@ function(aqua_add_target target_name)
         return()
     endif()
 
-    if(arg_EXECUTABLE)
+    if(arg_CONSOLE_EXECUTABLE OR arg_GUI_EXECUTABLE)
 
         if(NOT private_sources)
             message(SEND_ERROR "EXECUTABLE requires at least 1 private source file.")
             return()
         endif()
 
-        add_executable("${target_name}"
+        if(WIN32 AND arg_GUI_EXECUTABLE)
+            set(win32_property "WIN32")
+        else()
+            set(win32_property "")
+        endif()
+
+        add_executable("${target_name}" ${win32_property}
             ${public_headers}
             ${private_headers}
             ${private_sources}
